@@ -1,26 +1,31 @@
 package controller;
 
-import java.awt.event.ActionEvent;
-import java.awt.event.ActionListener;
+//import from our codebase
 import model.PlayStrategy;
 import view.ApplicationWindow;
+
+//import from java libraries
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
 
 public class StrategySelectionListener implements ActionListener
 {
     @Override
-    public void actionPerformed(ActionEvent event)
+    public void actionPerformed(ActionEvent actionEvent)
     {
-        //System.out.println(event.getActionCommand());
+        String actionCommand = actionEvent.getActionCommand();
 
-        String action = event.getActionCommand();
-        switch(action)
+        switch(actionCommand)
         {
             case ApplicationWindow.highLowAction:
-                Application.game.setStrategy(PlayStrategy.HighLow);
+                Application.numberGuessGame.setStrategy(PlayStrategy.HighLow);
                 break;
             case ApplicationWindow.closerAwayAction:
-                Application.game.setStrategy(PlayStrategy.CloserAway);
+                Application.numberGuessGame.setStrategy(PlayStrategy.CloserAway);
                 break;
         }
+
+        //console debugging
+        //System.out.println(event.getActionCommand());
     }
 }

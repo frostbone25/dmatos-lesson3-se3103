@@ -1,8 +1,18 @@
 package view;
 
-import java.awt.BorderLayout;
-import java.awt.GridLayout;
+//import from our codebase
+import controller.Application;
+import controller.ExitButtonListener;
+import controller.NewGameButtonListener;
+import controller.NumberEnterListener;
+import controller.ShowKeyButtonListener;
+import controller.StrategySelectionListener;
+import model.PlayStrategy;
 
+//import from java libraries
+import java.awt.BorderLayout;
+import java.awt.Container;
+import java.awt.GridLayout;
 import javax.swing.ButtonGroup;
 import javax.swing.JButton;
 import javax.swing.JCheckBox;
@@ -12,14 +22,6 @@ import javax.swing.JPanel;
 import javax.swing.JRadioButton;
 import javax.swing.JTextField;
 import javax.swing.border.TitledBorder;
-
-import controller.Application;
-import controller.ExitButtonListener;
-import controller.NewGameButtonListener;
-import controller.NumberEnterListener;
-import controller.ShowKeyButtonListener;
-import controller.StrategySelectionListener;
-import model.PlayStrategy;
 
 public class ApplicationWindow extends JFrame
 {
@@ -38,7 +40,7 @@ public class ApplicationWindow extends JFrame
 
     public void initalize()
     {
-        var contentPane = getContentPane();
+        Container contentPane = getContentPane();
         applicationCanvas = new ApplicationCanvas();
         contentPane.add(applicationCanvas, BorderLayout.CENTER);
 
@@ -56,15 +58,12 @@ public class ApplicationWindow extends JFrame
 
         JPanel strategyPanel = new JPanel();
         strategyPanel.setBorder(new TitledBorder("Select strategy"));
-        highLowButton = new JRadioButton(highLowAction, 
-            Application.game.getStrategy() == PlayStrategy.HighLow
-        );
-        closerAwayButton = new JRadioButton(closerAwayAction, 
-            Application.game.getStrategy() == PlayStrategy.CloserAway
-        );
+        highLowButton = new JRadioButton(highLowAction, Application.numberGuessGame.getStrategy() == PlayStrategy.HighLow);
+        closerAwayButton = new JRadioButton(closerAwayAction, Application.numberGuessGame.getStrategy() == PlayStrategy.CloserAway);
         strategyPanel.add(highLowButton);
         strategyPanel.add(closerAwayButton);
         southPanel.add(strategyPanel);
+        
         StrategySelectionListener strategySelectionListener = new StrategySelectionListener();
         highLowButton.addActionListener(strategySelectionListener);
         closerAwayButton.addActionListener(strategySelectionListener);
@@ -81,11 +80,16 @@ public class ApplicationWindow extends JFrame
         newGameButton.addActionListener(new NewGameButtonListener());
         exitButton = new JButton("Exit");
 
-        //exitButton.addActionListener(new ExitButtonListener());
+        //(demonstrated in lesson) first way to add a listener method, using a dedicated class
+        exitButton.addActionListener(new ExitButtonListener()); //<-- prefer this method for clarity and readability
+
+        //(demonstrated in lesson) second way to add a listener method, using an arrow function
         //exitButton.addActionListener( (e) -> {
             //System.exit(0);
         //} );
-        exitButton.addActionListener( e -> System.exit(0) );
+
+        //(demonstrated in lesson) third way to add a listener method, using a simplified arrow function
+        //exitButton.addActionListener( e -> System.exit(0) );
 
         actionPanel.add(showKeyButton);
         actionPanel.add(newGameButton);
@@ -96,9 +100,9 @@ public class ApplicationWindow extends JFrame
 
     public void updateWindow()
     {
-        switch(Application.game.getState())
+        switch(Application.numberGuessGame.getState())
         {
-            case INIT:
+            case INITAL:
             case OVER:
                 newGameButton.setEnabled(true);
                 numberField.setEnabled(false);

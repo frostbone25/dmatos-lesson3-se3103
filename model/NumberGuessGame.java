@@ -1,5 +1,6 @@
 package model;
 
+//import from java libraries
 import java.util.Random;
 
 public class NumberGuessGame 
@@ -20,7 +21,7 @@ public class NumberGuessGame
         geuss = -1;
         showKeyOn = false;
         attempts = 0;
-        state = GameState.INIT;
+        state = GameState.INITAL;
         strategy = PlayStrategy.HighLow;
     }
 
@@ -65,6 +66,7 @@ public class NumberGuessGame
         this.geuss = geuss;
 
         int difference = geuss - key;
+
         if(difference < 0)
         {
             progressMessage = "Go Higher!";
@@ -81,12 +83,12 @@ public class NumberGuessGame
 
     private void playCloserAway(int geuss)
     {
-        int prevDiff = Math.abs(key - this.geuss);
-        int newDiff = Math.abs(key - geuss);
+        int previousGeussDifference = Math.abs(key - this.geuss);
+        int newGeussDifference = Math.abs(key - geuss);
 
         this.geuss = geuss;
 
-        if(newDiff - prevDiff < 0)
+        if(newGeussDifference - previousGeussDifference < 0)
         {
             progressMessage = "Getting closer";
         }

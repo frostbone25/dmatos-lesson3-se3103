@@ -1,10 +1,11 @@
 package view;
 
-import javax.swing.JPanel;
-
+//import from our codebase
 import controller.Application;
 import model.NumberGuessGame;
 
+//import from java libraries
+import javax.swing.JPanel;
 import java.awt.Dimension;
 import java.awt.Font;
 import java.awt.Graphics;
@@ -12,12 +13,14 @@ import java.awt.Graphics2D;
 
 public class ApplicationCanvas extends JPanel
 {
+    private static final Font applicationFont = new Font("Courier New", Font.BOLD, 16);
     public static final int WIDTH = 500;
     public static final int HEIGHT = 300;
 
     public ApplicationCanvas()
     {
-        setPreferredSize(new Dimension(WIDTH, HEIGHT));
+        Dimension windowDimensions = new Dimension(WIDTH, HEIGHT);
+        setPreferredSize(windowDimensions);
     }
 
     @Override
@@ -26,9 +29,12 @@ public class ApplicationCanvas extends JPanel
         super.paintComponent(graphics);
         Graphics2D graphics2D = (Graphics2D)graphics;
 
-        switch(Application.game.getState())
+        //moved here to reduce redundancy
+        graphics2D.setFont(applicationFont);
+
+        switch(Application.numberGuessGame.getState())
         {
-            case INIT:
+            case INITAL:
                 drawInitalCanvas(graphics2D);
                 break;
             case PLAYING:
@@ -40,30 +46,26 @@ public class ApplicationCanvas extends JPanel
         }
     }
 
-    private void drawOverCanvas(Graphics2D graphics2D)
+    private void drawInitalCanvas(Graphics2D graphics2D)
     {
-        graphics2D.setFont(new Font("Courier New", Font.BOLD, 16));
-        var message1 = String.format("%d is correct! (Attempts = %d)", Application.game.getKey(), Application.game.getAttempts());
-        var message2 = "Press <New Game> to Play Again!";
-        graphics2D.drawString(message1, 50, 100);
-        graphics2D.drawString(message2, 50, 150);
+        String message = "Press <New Game> button to start";
+        graphics2D.drawString(message, 50, 150);
     }
 
     private void drawPlayingCanvas(Graphics2D graphics2D)
     {
-        graphics2D.setFont(new Font("Courier New", Font.BOLD, 16));
-        NumberGuessGame game = Application.game;
+        NumberGuessGame numberGuessGame = Application.numberGuessGame;
+        String promptString;
 
-        if(game.isShowKeyOn())
+        if(numberGuessGame.isShowKeyOn())
         {
-            var keyString = String.format("(Key: %d)", game.getKey());
+            var keyString = String.format("(Key: %d)", numberGuessGame.getKey());
             graphics2D.drawString(keyString, 50, 100);
         }
 
-        String promptString;
-        if(game.getGuess() >= 0)
+        if(numberGuessGame.getGuess() >= 0)
         {
-            promptString = String.format("Your Guess: %d (Attempts: %d)", game.getGuess(), game.getAttempts());
+            promptString = String.format("Your Guess: %d (Attempts: %d)", numberGuessGame.getGuess(), numberGuessGame.getAttempts());
         }
         else
         {
@@ -72,16 +74,18 @@ public class ApplicationCanvas extends JPanel
 
         graphics2D.drawString(promptString, 50, 150);
 
-        if(game.progressMessage != null)
+        if(numberGuessGame.progressMessage != null)
         {
-            graphics2D.drawString(game.progressMessage, 100, 200);
+            graphics2D.drawString(numberGuessGame.progressMessage, 100, 200);
         }
     }
 
-    private void drawInitalCanvas(Graphics2D graphics2D)
+    private void drawOverCanvas(Graphics2D graphics2D)
     {
-        graphics2D.setFont(new Font("Courier New", Font.BOLD, 16));
-        var message = "Press <New Game> button to start";
-        graphics2D.drawString(message, 50, 150);
+        String message1 = String.format("%d is correct! (Attempts = %d)", Application.numberGuessGame.getKey(), Application.numberGuessGame.getAttempts());
+        String message2 = "Press <New Game> to Play Again!";
+
+        graphics2D.drawString(message1, 50, 100);
+        graphics2D.drawString(message2, 50, 150);
     }
 }

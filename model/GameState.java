@@ -2,5 +2,5 @@ package model;
 
 public enum GameState
 {
-    INIT, PLAYING, OVER
+    INITAL, PLAYING, OVER
 }

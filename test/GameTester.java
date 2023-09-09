@@ -1,21 +1,22 @@
 package test;
 
+//import from our codebase
 import model.NumberGuessGame;
 
 public class GameTester 
 {
     public static void main(String[] args)
     {
-        NumberGuessGame game = new NumberGuessGame();
-        game.start();
-        System.out.println("" + game);
+        NumberGuessGame numberGuessGame = new NumberGuessGame();
+        numberGuessGame.start();
+        System.out.println("" + numberGuessGame);
 
-        game.play(50);
-        System.out.println(game);
-        System.out.println(game.progressMessage);
+        numberGuessGame.play(50);
+        System.out.println(numberGuessGame);
+        System.out.println(numberGuessGame.progressMessage);
 
-        game.play(30);
-        System.out.println(game);
-        System.out.println(game.progressMessage);
+        numberGuessGame.play(30);
+        System.out.println(numberGuessGame);
+        System.out.println(numberGuessGame.progressMessage);
     }
 }
